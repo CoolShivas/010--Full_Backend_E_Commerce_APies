@@ -1,7 +1,10 @@
 export const funcRegister = async (request, response) => {
   console.log("Printing the register function => ", request.body);
   /**
-   * Printing the register function =>  undefined
+   * Restarting 'index.js'
+Server is running at port :-) 8000
+MongoDB Connected Successfully
+Printing the register function =>  { name: 'pari', email: 'pari@gmail.com', password: '123' }
    */
   response.json({
     message: "User register successfully...!",
@@ -11,8 +14,13 @@ export const funcRegister = async (request, response) => {
   /**
    * {
     "message": "User register successfully...!",
-    "success": true
+    "success": true,
+    "data": {
+        "name": "pari",
+        "email": "pari@gmail.com",
+        "password": "123"
+    }
 }
    */
-  // // // Therefore, not getting the desired Output i.e,(data) on both POSTMAN and Terminal ;
+  // // // Therefore, getting the desired Output on both POSTMAN and Terminal;
 };

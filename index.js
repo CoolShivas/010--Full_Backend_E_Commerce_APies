@@ -1,9 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./Routes/user.js";
+import bodyParser from "express";
 
 const server = express();
 
+server.use(bodyParser.json());
 ///////***********************************************************************///////
 ///////***********************************************************************///////
 

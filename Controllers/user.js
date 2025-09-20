@@ -1,4 +1,5 @@
 import { UserSCHEMA } from "../Models/UserSCHEMA.js";
+import bcrypt from "bcryptjs";
 
 export const funcRegister = async (request, response) => {
   const { name, email, password } = request.body;
@@ -18,13 +19,15 @@ export const funcRegister = async (request, response) => {
     return response.json({ message: "User already exists..", success: false });
   }
 
+  const hashPassWord = await bcrypt.hash(password, 10);
+
   createUser = await UserSCHEMA.create({
     userName: name,
     userEmail: email,
-    userPassword: password,
+    userPassword: hashPassWord,
   });
 
-  //   console.log("Printing create user => ", createUser); // Getting data;
+  console.log("User register successfully...!");
 
   response.json({
     message: "User register successfully...!",

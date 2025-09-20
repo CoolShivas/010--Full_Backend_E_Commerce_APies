@@ -1,5 +1,6 @@
 import { UserSCHEMA } from "../Models/UserSCHEMA.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
@@ -57,36 +58,52 @@ export const funcRegister = async (request, response) => {
 // // // Starting of User Login function;
 
 export const funcLogin = async (request, response) => {
-  const { email, password } = request.body;
+  try {
+    const { email, password } = request.body;
 
-  if (email === "" || password === "") {
-    console.log("Please, fill all the fields.");
-    return response.json({
-      message: "Please, fill all the fields.",
-      success: false,
+    if (email === "" || password === "") {
+      console.log("Please, fill all the fields.");
+      return response.json({
+        message: "Please, fill all the fields.",
+        success: false,
+      });
+    }
+
+    let loginUser = await UserSCHEMA.findOne({ userEmail: email });
+
+    if (!loginUser) {
+      console.log("user not exists signup first..");
+      return response.json({
+        message: "user not exists signup first..",
+        success: false,
+      });
+    }
+
+    // // // Decrypting the hash password;
+    const validPassWord = await bcrypt.compare(
+      password,
+      loginUser.userPassword
+    );
+
+    if (!validPassWord) {
+      console.log("Invalid password");
+      return response.json({ message: "Invalid password", success: false });
+    }
+
+    const token = jwt.sign({ userid: loginUser._id }, "!@#$%^", {
+      expiresIn: "1d",
     });
-  }
 
-  let loginUser = await UserSCHEMA.findOne({ userEmail: email });
-
-  if (!loginUser) {
-    console.log("user not exists signup first..");
-    return response.json({
-      message: "user not exists signup first..",
-      success: false,
+    console.log(`Welcome ${loginUser.userName}`, "Token => ", token);
+    response.json({
+      message: `Welcome ${loginUser.userName}`,
+      success: true,
+      token,
     });
+  } catch (error) {
+    console.log(error.message);
+    response.json({ message: error.message });
   }
-
-  // // // Decrypting the hash password;
-  const validPassWord = await bcrypt.compare(password, loginUser.userPassword);
-
-  if (!validPassWord) {
-    console.log("Invalid password");
-    return response.json({ message: "Invalid password", success: false });
-  }
-
-  console.log(`Welcome ${loginUser.userName}`);
-  response.json({ message: `Welcome ${loginUser.userName}`, success: true });
 };
 
 // // // Ending of User Login function;

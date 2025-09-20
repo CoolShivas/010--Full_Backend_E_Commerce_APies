@@ -53,3 +53,43 @@ export const funcRegister = async (request, response) => {
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
+
+// // // Starting of User Login function;
+
+export const funcLogin = async (request, response) => {
+  const { email, password } = request.body;
+
+  if (email === "" || password === "") {
+    console.log("Please, fill all the fields.");
+    return response.json({
+      message: "Please, fill all the fields.",
+      success: false,
+    });
+  }
+
+  let loginUser = await UserSCHEMA.findOne({ userEmail: email });
+
+  if (!loginUser) {
+    console.log("user not exists signup first..");
+    return response.json({
+      message: "user not exists signup first..",
+      success: false,
+    });
+  }
+
+  // // // Decrypting the hash password;
+  const validPassWord = await bcrypt.compare(password, loginUser.userPassword);
+
+  if (!validPassWord) {
+    console.log("Invalid password");
+    return response.json({ message: "Invalid password", success: false });
+  }
+
+  console.log(`Welcome ${loginUser.userName}`);
+  response.json({ message: `Welcome ${loginUser.userName}`, success: true });
+};
+
+// // // Ending of User Login function;
+
+///////***********************************************************************///////
+///////***********************************************************************///////

@@ -1,0 +1,25 @@
+{
+  "name": "010--full_backend_e_commerce_apies",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoolShivas/010--Full_Backend_E_Commerce_APies.git"
+  },
+  "keywords": [],
+  "author": "shivaji",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CoolShivas/010--Full_Backend_E_Commerce_APies/issues"
+  },
+  "homepage": "https://github.com/CoolShivas/010--Full_Backend_E_Commerce_APies#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

@@ -1,3 +1,9 @@
-console.log(
-  "Starting of making the Full Backend of E-Commerce Platform with whole essential Apies."
-);
+import express from "express";
+
+const server = express();
+
+const PORT = 8000;
+
+server.listen(PORT, () => {
+  console.log(`Server is running at port :-) ${PORT}`);
+});

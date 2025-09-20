@@ -1,9 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
+import userRouter from "./Routes/user.js";
 
 const server = express();
 
-const PORT = 8000;
+///////***********************************************************************///////
+///////***********************************************************************///////
+
+// // // Starting of middleware use method to connect with User Routes endpoint;
+
+server.use("/api/user", userRouter);
+
+// // // Ending of middleware use method to connect with User Routes endpoint;
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
@@ -24,6 +32,8 @@ mongoose
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
+
+const PORT = 8000;
 
 server.listen(PORT, () => {
   console.log(`Server is running at port :-) ${PORT}`);

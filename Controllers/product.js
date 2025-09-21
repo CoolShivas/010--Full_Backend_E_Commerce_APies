@@ -43,7 +43,7 @@ export const getAllProduct = async (request, response) => {
       console.log("No product available");
       return response.json({ message: "No product available", success: false });
     }
-    console.log("List of all the products..");
+    console.log("List of all the products => ", getSaveDBProduct);
     response.json({
       message: "List of all the products..",
       success: true,
@@ -63,9 +63,12 @@ export const getAllProduct = async (request, response) => {
 // // // Starting of Get Product By ID function;
 
 export const getProductById = async (request, response) => {
-  try {
-    const idProduct = request.params.idpro;
+  const idProduct = request.params.idpro;
+  // // // Accessing request.params.idpro almost never throws in Express.
+  // // // If idpro is missing, it will just be undefined, not an exception
+  // // // Put only the error-prone code (like DB queries, async calls, or parsing) in the try block.
 
+  try {
     let getProByID = await ProductSCHEMA.findById(idProduct);
 
     if (!getProByID) {
@@ -88,6 +91,42 @@ export const getProductById = async (request, response) => {
 };
 
 // // // Ending of Get Product By ID function;
+
+///////***********************************************************************///////
+///////***********************************************************************///////
+
+// // // Starting of Update Product By ID function;
+
+export const updateProductById = async (request, response) => {
+  const updateID = request.params.idupdate;
+
+  try {
+    let updateProByID = await ProductSCHEMA.findByIdAndUpdate(
+      updateID,
+      request.body, // // It will show the specific product id's request body;
+      {
+        new: true, // // It is used to add the new field in the request body;
+      }
+    );
+
+    if (!updateProByID) {
+      console.log("Invalid Id...!");
+      return response.json({ message: "Invalid Id...!", success: false });
+    }
+
+    console.log("Specific product updated successfully...!", updateProByID);
+    response.json({
+      message: "Specific product updated successfully...!",
+      success: true,
+      data: updateProByID,
+    });
+  } catch (error) {
+    console.log("getProductByID error => ", error.message);
+    response.json({ message: error.message });
+  }
+};
+
+// // // Ending of Update Product By ID function;
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////

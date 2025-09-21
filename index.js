@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./Routes/user.js";
 import bodyParser from "express";
+import { config } from "dotenv";
 
 const server = express();
 
@@ -18,15 +19,21 @@ server.use("/api/user", userRouter);
 ///////***********************************************************************///////
 ///////***********************************************************************///////
 
+// // // Starting of Set-Up of dotenv;
+
+config({ path: ".env" });
+
+// // // Ending of Set-Up of dotenv;
+
+///////***********************************************************************///////
+///////***********************************************************************///////
+
 // // // Starting of connection MongoDB to ExpressJS through Mongoose;
 
 mongoose
-  .connect(
-    "mongodb+srv://shivas2710cool00_db_user:clVb21YmcXpJHpts@cluster0.notxlqn.mongodb.net/",
-    {
-      dbName: "FullBackend_ECommerce",
-    }
-  )
+  .connect(process.env.MONGO_URI, {
+    dbName: "FullBackend_ECommerce",
+  })
   .then(() => console.log("MongoDB Connected Successfully"))
   .catch((err) => console.log(err));
 
@@ -35,7 +42,7 @@ mongoose
 ///////***********************************************************************///////
 ///////***********************************************************************///////
 
-const PORT = 8000;
+const PORT = process.env.PORT;
 
 server.listen(PORT, () => {
   console.log(`Server is running at port :-) ${PORT}`);

@@ -32,3 +32,30 @@ export const addProduct = async (request, response) => {
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
+
+// // // Starting of Get All Product function;
+
+export const getAllProduct = async (request, response) => {
+  try {
+    let getSaveDBProduct = await ProductSCHEMA.find();
+
+    if (!getSaveDBProduct) {
+      console.log("No product available");
+      return response.json({ message: "No product available", success: false });
+    }
+    console.log("List of all the products..");
+    response.json({
+      message: "List of all the products..",
+      success: true,
+      getSaveDBProduct,
+    });
+  } catch (error) {
+    console.log("getAllProduct error => ", error.message);
+    response.json({ message: error.message });
+  }
+};
+
+// // // Ending of Get All Product function;
+
+///////***********************************************************************///////
+///////***********************************************************************///////

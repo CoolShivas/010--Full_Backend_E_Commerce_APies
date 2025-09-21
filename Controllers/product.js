@@ -59,3 +59,35 @@ export const getAllProduct = async (request, response) => {
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
+
+// // // Starting of Get Product By ID function;
+
+export const getProductById = async (request, response) => {
+  try {
+    const idProduct = request.params.idpro;
+
+    let getProByID = await ProductSCHEMA.findById(idProduct);
+
+    if (!getProByID) {
+      console.log("No product exist by this id..");
+      return response.json({
+        message: "No product exist by this id..",
+        success: false,
+      });
+    }
+    console.log("Here is your specific product => ", getProByID);
+    response.json({
+      message: "Here is your specific product..",
+      success: true,
+      data: getProByID,
+    });
+  } catch (error) {
+    console.log("getProductByID error => ", error.message);
+    response.json({ message: error.message });
+  }
+};
+
+// // // Ending of Get Product By ID function;
+
+///////***********************************************************************///////
+///////***********************************************************************///////

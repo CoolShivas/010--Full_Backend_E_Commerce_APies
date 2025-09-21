@@ -1,5 +1,9 @@
 import express from "express";
-import { addProduct, getAllProduct } from "../Controllers/product.js";
+import {
+  addProduct,
+  getAllProduct,
+  getProductById,
+} from "../Controllers/product.js";
 
 const router = express.Router();
 // // // @api description :- add products
@@ -10,5 +14,9 @@ router.post("/add", addProduct);
 // // // @api method :- get
 // // // @api endPoint :- /api/product/allproduct
 router.get("/allproduct", getAllProduct);
+// // // @api description :- get product by its id
+// // // @api method :- get
+// // // @api endPoint :- /api/product/allproduct/id
+router.get("/:idpro", getProductById);
 
 export default router;

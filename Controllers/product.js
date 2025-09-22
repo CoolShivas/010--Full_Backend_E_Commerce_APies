@@ -130,3 +130,32 @@ export const updateProductById = async (request, response) => {
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
+
+// // // Starting of Delete Product By ID function;
+
+export const deleteProductById = async (request, response) => {
+  const deleteID = request.params.iddel;
+
+  try {
+    let deleteProByID = await ProductSCHEMA.findByIdAndDelete(deleteID);
+
+    if (!deleteProByID) {
+      console.log("Invalid Id for deletion.");
+      return response.json({ message: "Invalid Id..", success: false });
+    }
+
+    console.log("Product deleted successfully...!");
+    response.json({
+      message: "Product deleted successfully...!",
+      success: true,
+    });
+  } catch (error) {
+    console.log("deleteProductByID error => ", error.message);
+    response.json({ message: error.message });
+  }
+};
+
+// // // Ending of Delete Product By ID function;
+
+///////***********************************************************************///////
+///////***********************************************************************///////

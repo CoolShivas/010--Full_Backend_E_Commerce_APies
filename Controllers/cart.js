@@ -55,7 +55,7 @@ export const addToCartItems = async (request, response) => {
     "quantity":1
 }
    */
-  // // // Then, enter the URL as (http://localhost:8000/api/cart/additem) and hit send btn;
+  // // // Then, select the POST request and enter the URL as (http://localhost:8000/api/cart/additem) and hit send btn;
   // // // Getting the response as :-
   /**
    * {
@@ -126,7 +126,7 @@ export const getUserCart = async (request, response) => {
     cart,
   });
   // // // Open the POSTMAN then select the header tag fill both key as Authen and value as login user token;
-  // // // Then, enter the URL as (http://localhost:8000/api/cart/usercart) and hit send btn;
+  // // // Then, select the GET request and enter the URL as (http://localhost:8000/api/cart/usercart) and hit send btn;
   // // // Getting the response as :-
   /**
    * {
@@ -192,7 +192,7 @@ export const removeProductFromCart = async (request, response) => {
     success: true,
   });
   // // // Open the POSTMAN then select the header tag fill both key as Authen and value as login user token;
-  // // // Then, enter the URL as (http://localhost:8000/api/cart/remove/68cfa132cc87a8e5ac59f8d0) and hit send btn;
+  // // // Then, select the DELETE request and enter the URL as (http://localhost:8000/api/cart/remove/68cfa132cc87a8e5ac59f8d0) and hit send btn;
   // // // Getting the response as :-
   /**
    * {
@@ -231,3 +231,33 @@ export const removeProductFromCart = async (request, response) => {
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
+
+// // // Starting of Clearing the User's Cart;
+
+export const clearingUserCart = async (request, response) => {
+  const userId = request.confirmUserToken;
+
+  let cart = await CartSCHEMA.findOne({ userId });
+
+  if (!cart) {
+    cart = new CartSCHEMA({ items: [] });
+  } else {
+    cart.items = [];
+  }
+
+  await cart.save();
+
+  console.log("User cart clear successfully...!");
+  response.json({ message: "User cart clear successfully...!", success: true });
+  // // // Open the POSTMAN then select the header tag fill both key as Authen and value as login user token;
+  // // // Then, select the DELETE request and enter the URL as (http://localhost:8000/api/cart/clearcart) and hit send btn;
+  // // // Getting the response as :-
+  /**
+   * {
+    "message": "User cart clear successfully...!",
+    "success": true
+}
+   */
+};
+
+// // // Ending of Clearing the User's Cart;

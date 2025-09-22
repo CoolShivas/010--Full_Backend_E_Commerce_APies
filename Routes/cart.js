@@ -2,6 +2,7 @@ import express from "express";
 import {
   addToCartItems,
   clearingUserCart,
+  decreaseProductQty,
   getUserCart,
   removeProductFromCart,
 } from "../Controllers/cart.js";
@@ -24,5 +25,9 @@ router.delete("/remove/:productId", isAuthenticated, removeProductFromCart);
 // // // @api method :- delete
 // // // @api endPoint :- /api/cart/clearcart
 router.delete("/clearcart", isAuthenticated, clearingUserCart);
+// // // @api description :- first authenticate then decrease the specific user's cart's quantity;
+// // // @api method :- post
+// // // @api endPoint :- /api/cart/clearcart
+router.post("/--qty", isAuthenticated, decreaseProductQty);
 
 export default router;

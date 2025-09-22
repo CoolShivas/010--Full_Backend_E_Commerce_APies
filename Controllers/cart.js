@@ -261,3 +261,97 @@ export const clearingUserCart = async (request, response) => {
 };
 
 // // // Ending of Clearing the User's Cart;
+
+///////***********************************************************************///////
+///////***********************************************************************///////
+
+// // // Starting of Decreasing the Quantity of specific user's cart items;
+
+export const decreaseProductQty = async (request, response) => {
+  const { productId, quantity } = request.body;
+
+  const userId = request.confirmUserToken;
+
+  let cart = await CartSCHEMA.findOne({ userId });
+
+  if (!cart) {
+    cart = new CartSCHEMA({ userId, items: [] });
+  }
+
+  const itemIndex = cart.items.findIndex((currElem) => {
+    return currElem.productId.toString() === productId;
+  });
+
+  if (itemIndex > -1) {
+    const item = cart.items[itemIndex];
+
+    if (item.quantity > quantity) {
+      const pricePerUnit = item.price / item.quantity;
+
+      item.quantity -= quantity;
+      item.price -= pricePerUnit * quantity;
+    } else {
+      cart.items.splice(itemIndex, 1);
+    }
+  } else {
+    return response.json({ message: "Invalid product id", success: false });
+  }
+
+  await cart.save();
+
+  console.log("Items quantity decreased successfully...!");
+  response.json({
+    message: "Items quantity decreased successfully...!",
+    success: true,
+    cart,
+  });
+  // // // Open the POSTMAN then select the header tag fill both key as Authen and value as login user token;
+  // // // Then, select the POST request and enter the URL as (http://localhost:8000/api/cart/--qty) and then on body tag mention productId and quantity as :-
+  /**
+   * {
+    "productId":"68cfcee21c2943fabb49a44b",
+    "quantity":1
+}
+   */
+  // // // Then hit send btn;
+  // // // Getting the response as :-
+  /**
+   * {
+    "message": "Items quantity decreased successfully...!",
+    "success": true,
+    "cart": {
+        "_id": "68d193982359e1c0c680d5f6",
+        "userId": "68cea36532a47c9ae54373e7",
+        "items": [
+            {
+                "productId": "68cfc88f9fd463fa4a9af53a",
+                "title": "Xiaomi",
+                "price": 1600,
+                "quantity": 2,
+                "_id": "68d193982359e1c0c680d5f7"
+            },
+            {
+                "productId": "68cfcee21c2943fabb49a44b",
+                "title": "Micromax",
+                "price": 12500,
+                "quantity": 1,
+                "_id": "68d193e42359e1c0c680d600"
+            },
+            {
+                "productId": "68d0d250947587b5a8525335",
+                "title": "Itel",
+                "price": 5000,
+                "quantity": 1,
+                "_id": "68d194262359e1c0c680d60b"
+            }
+        ],
+        "__v": 2
+    }
+}
+   */
+};
+
+// // // Ending of Decreasing the Quantity of specific user's cart items;
+
+///////***********************************************************************///////
+///////***********************************************************************///////

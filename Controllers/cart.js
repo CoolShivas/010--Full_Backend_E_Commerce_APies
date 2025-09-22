@@ -9,14 +9,14 @@ export const addToCartItems = async (request, response) => {
   const { productId, title, price, quantity } = request.body;
 
   // // // Getting the user id that is already authenticated and maked the user globally;
-  const globalUser = request.confirmUserToken;
+  const userId = request.confirmUserToken;
 
   // // // Finding or Searching the user id on the database whether the user's cart is available or not. If not then assigning the new cart to the user. If already having then on that cart adding the items on it.
-  let cart = await CartSCHEMA.findOne({ globalUser });
+  let cart = await CartSCHEMA.findOne({ userId });
 
   if (!cart) {
     // // // If user not having the cart then assigning the cart with empty items array initially blank to the user;
-    cart = new CartSCHEMA({ globalUser, items: [] });
+    cart = new CartSCHEMA({ userId, items: [] });
   }
 
   // // // Finding the index of the product;
@@ -76,23 +76,24 @@ export const addToCartItems = async (request, response) => {
     }
 }
    */
-  // // // Again hitting the send btn and the response as the same as previous :-
+  // // // Again hitting the send btn and the response is different with the same product having different price and quantity :-
   /**
    * {
     "message": "Items added successfully...",
     "success": true,
     "cart": {
+        "_id": "68d121cfe7ab029a63af5888",
+        "userId": "68cf96272cb8522486e7183c",
         "items": [
             {
                 "productId": "68cfa132cc87a8e5ac59f8d0",
-                "title": "Infinix Hot 10s",
-                "price": 7500,
-                "quantity": 1,
-                "_id": "68d14041d6e4f385d24eb0c6"
+                "title": "Google Pixy",
+                "price": 160000,
+                "quantity": 4,
+                "_id": "68d1256bb393c89ac2a2998d"
             }
         ],
-        "_id": "68d14041d6e4f385d24eb0c5",
-        "__v": 0
+        "__v": 1
     }
 }
    */

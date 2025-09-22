@@ -16,7 +16,7 @@ const isAuthenticated = async (request, response, next) => {
     let verifyingJwtUserToken = jwt.verify(usersLoginToken, process.env.JWT);
 
     // // // For identifying user token that you have entered at the time of Login user when jwt.sign({ userid: loginUser._id } you have done;
-    let identifyingUserToken = verifyingJwtUserToken.userid;
+    let identifyingUserToken = verifyingJwtUserToken.userId;
 
     // // // For confirming the user token by checking the user's schema having user token or not;
     let confirmUserToken = await UserSCHEMA.findById(identifyingUserToken);

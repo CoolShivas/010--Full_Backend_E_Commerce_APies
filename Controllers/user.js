@@ -90,7 +90,7 @@ export const funcLogin = async (request, response) => {
       return response.json({ message: "Invalid password", success: false });
     }
 
-    const token = jwt.sign({ userid: loginUser._id }, process.env.JWT, {
+    const token = jwt.sign({ userId: loginUser._id }, process.env.JWT, {
       expiresIn: "1d",
     });
 

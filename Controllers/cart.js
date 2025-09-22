@@ -163,3 +163,71 @@ export const getUserCart = async (request, response) => {
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
+
+// // // Starting of Remove the Product from the Cart;
+
+export const removeProductFromCart = async (request, response) => {
+  const productId = request.params.productId;
+  const userId = request.confirmUserToken;
+
+  let cart = await CartSCHEMA.findOne({ userId });
+
+  if (!cart) {
+    console.log("Sorry, User cart not found..!");
+    return response.json({
+      message: "Sorry, User cart not found..!",
+      success: false,
+    });
+  }
+
+  cart.items = cart.items.filter((cur) => {
+    return cur.productId.toString() !== productId;
+  });
+
+  await cart.save();
+
+  console.log("Product removed from cart successfully...!");
+  response.json({
+    message: "Product removed from cart successfully...!",
+    success: true,
+  });
+  // // // Open the POSTMAN then select the header tag fill both key as Authen and value as login user token;
+  // // // Then, enter the URL as (http://localhost:8000/api/cart/remove/68cfa132cc87a8e5ac59f8d0) and hit send btn;
+  // // // Getting the response as :-
+  /**
+   * {
+    "message": "Product removed from cart successfully...!",
+    "success": true
+}
+   */
+  // // // Again if you make the get user cart you will get the response result as :-
+  /**
+   * /**
+   * {
+    "message": "Fetching user cart successfully...!",
+    "success": true,
+    "cart": [
+        {
+            "_id": "68d185df977aec5d020e525f",
+            "userId": "68cf96272cb8522486e7183c",
+            "items": [
+                {
+                    "productId": "68cfc88f9fd463fa4a9af53a",
+                    "title": "Xiaomi",
+                    "price": 1600,
+                    "quantity": 2,
+                    "_id": "68d187260ab3e815ffdb324d"
+                }
+            ],
+            "__v": 2
+        }
+    ]
+}
+   */
+  // // // Therefore, it removes the whole product id of that product (such as infinix product Id I have entered to delete. It removed the product)
+};
+
+// // // Ending of Remove the Product from the Cart;
+
+///////***********************************************************************///////
+///////***********************************************************************///////

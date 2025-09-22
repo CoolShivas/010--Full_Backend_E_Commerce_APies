@@ -1,5 +1,9 @@
 import express from "express";
-import { addToCartItems, getUserCart } from "../Controllers/cart.js";
+import {
+  addToCartItems,
+  getUserCart,
+  removeProductFromCart,
+} from "../Controllers/cart.js";
 import isAuthenticated from "../Middlewares/Auth.js";
 
 const router = express.Router();
@@ -11,5 +15,9 @@ router.post("/additem", isAuthenticated, addToCartItems);
 // // // @api method :- get
 // // // @api endPoint :- /api/cart/usercart
 router.get("/usercart", isAuthenticated, getUserCart);
+// // // @api description :- first authenticate then remove the specific user product from the cart;
+// // // @api method :- delete
+// // // @api endPoint :- /api/cart/remove/:id
+router.delete("/remove/:productId", isAuthenticated, removeProductFromCart);
 
 export default router;

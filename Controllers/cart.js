@@ -103,3 +103,63 @@ export const addToCartItems = async (request, response) => {
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////
+
+// // // Starting of Getting User Specific Cart function;
+
+export const getUserCart = async (request, response) => {
+  const userId = request.confirmUserToken;
+
+  let cart = await CartSCHEMA.find({ userId });
+
+  if (!cart) {
+    console.log("Sorry, User cart not found..!");
+    return response.json({
+      message: "Sorry, User cart not found..!",
+      success: false,
+    });
+  }
+
+  console.log("Fetching user cart successfully => ", cart);
+  response.json({
+    message: "Fetching user cart successfully...!",
+    success: true,
+    cart,
+  });
+  // // // Open the POSTMAN then select the header tag fill both key as Authen and value as login user token;
+  // // // Then, enter the URL as (http://localhost:8000/api/cart/usercart) and hit send btn;
+  // // // Getting the response as :-
+  /**
+   * {
+    "message": "Fetching user cart successfully...!",
+    "success": true,
+    "cart": [
+        {
+            "_id": "68d185df977aec5d020e525f",
+            "userId": "68cf96272cb8522486e7183c",
+            "items": [
+                {
+                    "productId": "68cfa132cc87a8e5ac59f8d0",
+                    "title": "Infinix Hot 10s",
+                    "price": 182500,
+                    "quantity": 5,
+                    "_id": "68d185df977aec5d020e5260"
+                },
+                {
+                    "productId": "68cfc88f9fd463fa4a9af53a",
+                    "title": "Xiaomi",
+                    "price": 1600,
+                    "quantity": 2,
+                    "_id": "68d187260ab3e815ffdb324d"
+                }
+            ],
+            "__v": 1
+        }
+    ]
+}
+   */
+};
+
+// // // Ending of Getting User Specific Cart function;
+
+///////***********************************************************************///////
+///////***********************************************************************///////

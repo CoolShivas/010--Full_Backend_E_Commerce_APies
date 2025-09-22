@@ -4,6 +4,7 @@ import userRouter from "./Routes/user.js";
 import bodyParser from "express";
 import { config } from "dotenv";
 import productRouter from "./Routes/product.js";
+import cartRouter from "./Routes/cart.js";
 
 const server = express();
 
@@ -17,6 +18,15 @@ server.use("/api/user", userRouter);
 server.use("/api/product", productRouter);
 
 // // // Ending of middleware use method to connect with User Routes endpoint;
+
+///////***********************************************************************///////
+///////***********************************************************************///////
+
+// // // Starting of middleware use method to connect with Cart Routes endpoint;
+
+server.use("/api/cart", cartRouter);
+
+// // // Ending of middleware use method to connect with Cart Routes endpoint;
 
 ///////***********************************************************************///////
 ///////***********************************************************************///////

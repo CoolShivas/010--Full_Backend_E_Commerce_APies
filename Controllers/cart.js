@@ -1,35 +1,98 @@
+import { CartSCHEMA } from "../Models/CartSCHEMA.js";
+
 ///////***********************************************************************///////
 ///////***********************************************************************///////
 
 // // // Starting of Add To Cart Items or Product function;
 
 export const addToCartItems = async (request, response) => {
-  console.log("Items added successfully in your cart", request.body);
-  /**
-   * Server is running at port :-) 8000
-MongoDB Connected Successfully
-Items added successfully in your cart {
-  productId: '68cfcee21c2943fabb49a44b',
-  title: 'Micromax',
-  price: 12500,
-  quantity: 5
-}
-   * 
-   */
-  response.json({
-    message: "Items added successfully in your cart",
-    success: true,
-    data: request.body,
+  const { productId, title, price, quantity } = request.body;
+
+  // // // Getting the user id that is already authenticated and maked the user globally;
+  const globalUser = request.confirmUserToken;
+
+  // // // Finding or Searching the user id on the database whether the user's cart is available or not. If not then assigning the new cart to the user. If already having then on that cart adding the items on it.
+  let cart = await CartSCHEMA.findOne({ globalUser });
+
+  if (!cart) {
+    // // // If user not having the cart then assigning the cart with empty items array initially blank to the user;
+    cart = new CartSCHEMA({ globalUser, items: [] });
+  }
+
+  // // // Finding the index of the product;
+  // // // Finding the item index if it already exist then instead of spearately adding it. With the help of product index only increase the product price and quantity.
+  // // // Therefore, findIndex will return the -1 if not found. If found then return its index;
+  let itemIndex = cart.items.findIndex((indexOfItem) => {
+    return indexOfItem.productId.toString() === productId;
+    // // // Converting this (indexOfItem.productId.toString()) because it is an ObjectId as in CartSCHEMA we have made the productId;
+    // // // If productId === cart having productId then we will get the index of that product. By which we can only increase its price and quantity instead of separately assinging it again;
   });
+
+  if (itemIndex > -1) {
+    cart.items[itemIndex].quantity += quantity;
+    cart.items[itemIndex].price += price * quantity;
+  } else {
+    // // // If item not exist in the cart then add it on the cart by push method;
+    cart.items.push({ productId, title, price, quantity });
+  }
+
+  // // // Saving the cart;
+  await cart.save();
+
+  console.log("Items added successfully...", cart); // // Getting the same Output on Terminal as we get the response output as;
+  response.json({
+    message: "Items added successfully...",
+    success: true,
+    cart,
+  });
+  // // // Open the POSTMAN then select the header tag fill both key as Authen and value as login user token;
+  // // // Then, select the body tag and fill the raw data as :-
   /**
    * {
-    "message": "Items added successfully in your cart",
+    "productId":"68cfa132cc87a8e5ac59f8d0",
+    "title": "Infinix Hot 10s",
+    "price": 7500,
+    "quantity":1
+}
+   */
+  // // // Then, enter the URL as (http://localhost:8000/api/cart/additem) and hit send btn;
+  // // // Getting the response as :-
+  /**
+   * {
+    "message": "Items added successfully...",
     "success": true,
-    "data": {
-        "productId": "68cfcee21c2943fabb49a44b",
-        "title": "Micromax",
-        "price": 12500,
-        "quantity": 5
+    "cart": {
+        "items": [
+            {
+                "productId": "68cfa132cc87a8e5ac59f8d0",
+                "title": "Infinix Hot 10s",
+                "price": 7500,
+                "quantity": 1,
+                "_id": "68d13eee96ebb27bea27f60c"
+            }
+        ],
+        "_id": "68d13eee96ebb27bea27f60b",
+        "__v": 0
+    }
+}
+   */
+  // // // Again hitting the send btn and the response as the same as previous :-
+  /**
+   * {
+    "message": "Items added successfully...",
+    "success": true,
+    "cart": {
+        "items": [
+            {
+                "productId": "68cfa132cc87a8e5ac59f8d0",
+                "title": "Infinix Hot 10s",
+                "price": 7500,
+                "quantity": 1,
+                "_id": "68d14041d6e4f385d24eb0c6"
+            }
+        ],
+        "_id": "68d14041d6e4f385d24eb0c5",
+        "__v": 0
     }
 }
    */
